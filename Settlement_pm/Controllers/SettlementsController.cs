@@ -20,11 +20,12 @@ namespace Settlement_pm.Controllers
         }
 
         // GET: Settlements
+        //חיפוש+ הפרדת דפים- עד חמש בעמוד + מיון בסדר עולה ויורד
         public async Task<IActionResult> Index(string searchString, string sortOrder, int page = 1)
         {
-            int pageSize = 5; // מספר ישובים בדף
+            int pageSize = 5; 
 
-            // שלב 1: חיפוש
+            
             var settlements = from s in _context.Settlements
                               select s;
 
@@ -33,7 +34,7 @@ namespace Settlement_pm.Controllers
                 settlements = settlements.Where(s => s.SettlementName.Contains(searchString));
             }
 
-            // שלב 2: מיון
+            
             switch (sortOrder)
             {
                 case "name_desc":
@@ -44,11 +45,11 @@ namespace Settlement_pm.Controllers
                     break;
             }
 
-            // שלב 3: פיצול לדפים
+            
             var pagedSettlements = await PaginatedList<Settlement>.CreateAsync(
                 settlements.AsNoTracking(), page, pageSize);
 
-            // העברת פרמטרים לדף התצוגה
+            
             ViewData["CurrentSort"] = sortOrder;
             ViewData["CurrentFilter"] = searchString;
             return View(pagedSettlements);
