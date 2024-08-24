@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Settlement_pm.props" />
+</Project>

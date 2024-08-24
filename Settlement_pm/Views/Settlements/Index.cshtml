@@ -1,0 +1,64 @@
+﻿@model PaginatedList<Settlement>
+
+@{
+    ViewData["Title"] = "Index";
+    var currentFilter = ViewData["CurrentFilter"] as string;
+    var currentSort = ViewData["CurrentSort"] as string;
+}
+
+<h1>ניהול ישובים</h1>
+
+<p>
+    <a asp-action="Create">הוספת ישוב</a>
+</p>
+
+<!-- חיפוש -->
+<form method="get">
+    <input type="text" name="searchString" value="@currentFilter" placeholder="חפש לפי שם" />
+    <input type="submit" value="חפש" />
+</form>
+
+<!-- מיון -->
+<p>
+    @Html.ActionLink("מיין לפי שם (עולה)", "Index", new { sortOrder = string.IsNullOrEmpty(currentSort) ? "name_desc" : "" }) |
+    @Html.ActionLink("מיין לפי שם (יורד)", "Index", new { sortOrder = "name_desc" })
+</p>
+
+<!-- טבלה -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("שם ישוב", "Index", new { sortOrder = currentSort })
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SettlementName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">עריכה</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">פרטים</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">מחיקה</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- דפים -->
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex - 1)" asp-route-searchString="@currentFilter" asp-route-sortOrder="@currentSort">קודם</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-page="@(Model.PageIndex + 1)" asp-route-searchString="@currentFilter" asp-route-sortOrder="@currentSort">הבא</a>
+    }
+</div>
