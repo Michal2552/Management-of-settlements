@@ -12,19 +12,18 @@
     <a asp-action="Create">הוספת ישוב</a>
 </p>
 
-<!-- חיפוש -->
+
 <form method="get">
     <input type="text" name="searchString" value="@currentFilter" placeholder="חפש לפי שם" />
     <input type="submit" value="חפש" />
 </form>
 
-<!-- מיון -->
 <p>
     @Html.ActionLink("מיין לפי שם (עולה)", "Index", new { sortOrder = string.IsNullOrEmpty(currentSort) ? "name_desc" : "" }) |
     @Html.ActionLink("מיין לפי שם (יורד)", "Index", new { sortOrder = "name_desc" })
 </p>
 
-<!-- טבלה -->
+
 <table class="table">
     <thead>
         <tr>
@@ -51,7 +50,7 @@
     </tbody>
 </table>
 
-<!-- דפים -->
+
 <div>
     @if (Model.HasPreviousPage)
     {
